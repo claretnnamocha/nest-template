@@ -4,16 +4,16 @@
   "properties": {
     "name": {
       "type": "string",
-      "description": "The name of the controller."
+      "description": "The name of the service."
     },
     "path": {
       "type": "string",
-      "description": "The path to create the controller.",
+      "description": "The path to create the service.",
       "default": "src"
     },
     "flat": {
       "type": "boolean",
-      "description": "If true, do not create a new folder for the controller.",
+      "description": "If true, does not create a folder for the service.",
       "default": false
     }
   },

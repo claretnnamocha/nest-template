@@ -1,11 +1,19 @@
+import { normalize } from '@angular-devkit/core';
 import {
+  apply,
+  chain,
+  mergeWith,
+  move,
   Rule,
   SchematicContext,
   strings,
+  template,
   Tree,
+  url,
 } from '@angular-devkit/schematics';
 import * as prettier from 'prettier';
 import * as ts from 'typescript';
+import path = require('path');
 
 function findLastImportPosition(sourceFile: ts.SourceFile): ts.Node | null {
   let lastImport: ts.Node | null = null;
@@ -112,14 +120,96 @@ async function updateModuleEntry(
     }
   }
 
-  // Format using Prettier.
-  const prettierConfig = (await prettier.resolveConfig(modulePath)) || {};
-  const formattedSource = await prettier.format(sourceText, {
-    ...prettierConfig,
-    parser: 'typescript',
-  });
+  const formattedSource = await formatFileContent(sourceText);
   tree.overwrite(modulePath, formattedSource);
   return tree;
+}
+
+export async function formatFileContent(sourceText: string): Promise<string> {
+  const prettierConfig = await prettier.resolveConfig(
+    path.dirname('src/app.module.ts'),
+  );
+  const config = prettierConfig || {};
+  const formatted = await prettier.format(sourceText, {
+    ...config,
+    parser: 'typescript',
+  });
+  return formatted;
+}
+
+export function applyGenerator(
+  options: SchemaOptions,
+  templateFolder: string,
+  fileSuffix: string,
+  updateModuleFn: Rule,
+): Rule {
+  return (tree: Tree, _context: SchematicContext) => {
+    // Set default path to 'src' if not provided.
+    options.path = options.path || 'src';
+
+    // Compute destination folder: if flat, use options.path directly;
+    // otherwise, create a subfolder named after the dasherized name.
+    const destination = options.flat
+      ? normalize(options.path)
+      : normalize(`${options.path}/${strings.dasherize(options.name)}`);
+
+    let services: string[] = [];
+    if (templateFolder === 'services') {
+      const dir = tree.getDir(destination);
+      if (dir && dir.subfiles && dir.subfiles.length > 0) {
+        services = dir.subfiles
+          .filter((file) => file.endsWith('.service.ts'))
+          .map((file) => {
+            // Remove the extension and form the service class name.
+            const base = file.replace('.service.ts', '');
+            return strings.classify(base) + 'Service';
+          });
+      }
+    }
+
+    // Prepare the template source from the specified folder.
+    const templateSource = apply(url(`../templates/${templateFolder}`), [
+      template({
+        ...options,
+        classify: strings.classify,
+        dasherize: strings.dasherize,
+        camelize: strings.camelize,
+        services,
+      }),
+      move(destination),
+    ]);
+
+    // Compute the generated file path.
+    const generatedFilePath = path.join(
+      destination,
+      `${strings.dasherize(options.name)}${fileSuffix}`,
+    );
+
+    return chain([
+      mergeWith(templateSource),
+      updateModuleFn,
+      // Format the generated file.
+      async (tree: Tree, context: SchematicContext) => {
+        const fileBuffer = tree.read(generatedFilePath);
+        if (fileBuffer) {
+          const sourceText = fileBuffer.toString('utf-8');
+          const formatted = await formatFileContent(sourceText);
+          tree.overwrite(generatedFilePath, formatted);
+        } else {
+          context.logger.warn(
+            `Generated file ${generatedFilePath} not found for formatting.`,
+          );
+        }
+        return tree;
+      },
+    ]);
+  };
+}
+
+export interface SchemaOptions {
+  name: string;
+  path?: string;
+  flat?: boolean;
 }
 
 export function updateAppModuleForController(options: {
