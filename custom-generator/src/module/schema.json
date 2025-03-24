@@ -1,0 +1,21 @@
+{
+  "$id": "custom-module-schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the module."
+    },
+    "path": {
+      "type": "string",
+      "description": "The path where the module should be created.",
+      "default": "src"
+    },
+    "flat": {
+      "type": "boolean",
+      "description": "If true, do not create a new folder.",
+      "default": false
+    }
+  },
+  "required": ["name"]
+}

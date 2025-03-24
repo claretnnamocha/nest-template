@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "extends": ["@nestjs/schematics"],
+  "schematics": {
+    "controller": {
+      "description": "Generate a custom controller.",
+      "factory": "./controller/index#customControllerWithModuleUpdate",
+      "schema": "./controller/schema.json"
+    },
+    "service": {
+      "description": "Generate a custom service.",
+      "factory": "./service/index#customServiceWithModuleUpdate",
+      "schema": "./service/schema.json"
+    },
+    "module": {
+      "description": "Generate a custom module, create folder if needed, and update app.module.ts",
+      "factory": "./module/index#customModuleWithModuleUpdate",
+      "schema": "./module/schema.json"
+    }
+  }
+}

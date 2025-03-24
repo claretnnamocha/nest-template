@@ -1,0 +1,21 @@
+{
+  "SAMPLE_GREETING": "Hello",
+  "HTTP_RESPONSE": {
+    "HEALTH": "Health Okay!"
+  },
+  "VALIDATION": {
+    "WEAK_PASSWORD": "'{property}' is not a strong password",
+    "NOT_EMPTY": "'{property}' should not be empty",
+    "NOT_STRING": "'{property}' must be a string",
+    "INVALID_EMAIL": "'{property}' must be an email",
+    "INVALID_IP_ADDRESS": "'{property}' must be an ip address",
+    "INVALID_PARAMETERS": "Invalid input parameters"
+  },
+  "MESSAGES": {
+    "USER_ALREADY_EXISTS": "User already exists",
+    "REGISTRATION_SUCCESSFUL": "Registration successful",
+    "LOGIN_FAILED": "Login failed",
+    "LOGIN_SUCCESSFUL": "Login successful",
+    "PROFILE_NOT_ACTIVATED": "Profile is not activated"
+  }
+}

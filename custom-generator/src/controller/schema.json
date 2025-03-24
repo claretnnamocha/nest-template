@@ -1,0 +1,21 @@
+{
+  "$id": "custom-generator-schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the controller."
+    },
+    "path": {
+      "type": "string",
+      "description": "The path to create the controller.",
+      "default": "src"
+    },
+    "flat": {
+      "type": "boolean",
+      "description": "If true, do not create a new folder for the controller.",
+      "default": false
+    }
+  },
+  "required": ["name"]
+}
