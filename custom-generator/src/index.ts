@@ -156,17 +156,24 @@ export function applyGenerator(
       : normalize(`${options.path}/${strings.dasherize(options.name)}`);
 
     let services: string[] = [];
-    if (templateFolder === 'services') {
-      const dir = tree.getDir(destination);
-      if (dir && dir.subfiles && dir.subfiles.length > 0) {
-        services = dir.subfiles
-          .filter((file) => file.endsWith('.service.ts'))
-          .map((file) => {
-            // Remove the extension and form the service class name.
-            const base = file.replace('.service.ts', '');
-            return strings.classify(base) + 'Service';
-          });
-      }
+    let controllers: string[] = [];
+
+    const dir = tree.getDir(destination);
+    if (dir && dir.subfiles && dir.subfiles.length > 0) {
+      services = dir.subfiles
+        .filter((file) => file.endsWith('.service.ts'))
+        .map((file) => {
+          // Remove the extension and form the service class name.
+          const base = file.replace('.service.ts', '');
+          return strings.classify(base) + 'Service';
+        });
+      controllers = dir.subfiles
+        .filter((file) => file.endsWith('.controller.ts'))
+        .map((file) => {
+          // Remove the extension and form the controller class name.
+          const base = file.replace('.controller.ts', '');
+          return strings.classify(base) + 'Controller';
+        });
     }
 
     // Prepare the template source from the specified folder.
@@ -177,6 +184,7 @@ export function applyGenerator(
         dasherize: strings.dasherize,
         camelize: strings.camelize,
         services,
+        controllers,
       }),
       move(destination),
     ]);
@@ -221,8 +229,8 @@ export function updateAppModuleForController(options: SchemaOptions): Rule {
     const controllerClassName = `${strings.classify(options.name)}Controller`;
     const name = `${strings.dasherize(options.name)}`;
     const controllerImportPath = options.flat
-      ? `./${name}.controller`
-      : `./${name}/${name}.controller`;
+      ? `${options.path}/${name}.controller`
+      : `${options.path}/${name}/${name}.controller`;
     const importStatement = `import { ${controllerClassName} } from '${controllerImportPath}';`;
     return updateModuleEntry(
       tree,
@@ -241,8 +249,8 @@ export function updateAppModuleForService(options: SchemaOptions): Rule {
     const serviceClassName = `${strings.classify(options.name)}Service`;
     const name = `${strings.dasherize(options.name)}`;
     const serviceImportPath = options.flat
-      ? `./${name}.service`
-      : `./${name}/${name}.service`;
+      ? `${options.path}/${name}.service`
+      : `${options.path}/${name}/${name}.service`;
     const importStatement = `import { ${serviceClassName} } from '${serviceImportPath}';`;
     return updateModuleEntry(
       tree,
@@ -261,8 +269,8 @@ export function updateAppModuleForModule(options: SchemaOptions): Rule {
     const moduleClassName = `${strings.classify(options.name)}Module`;
     const name = `${strings.dasherize(options.name)}`;
     const moduleImportPath = options.flat
-      ? `./${name}.module`
-      : `./${name}/${name}.module`;
+      ? `${options.path}/${name}.module`
+      : `${options.path}/${name}/${name}.module`;
     const importStatement = `import { ${moduleClassName} } from '${moduleImportPath}';`;
     return updateModuleEntry(
       tree,
