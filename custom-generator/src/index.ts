@@ -125,9 +125,11 @@ async function updateModuleEntry(
   return tree;
 }
 
+const defaultModulePath = "'src/app.module.ts'";
+
 export async function formatFileContent(sourceText: string): Promise<string> {
   const prettierConfig = await prettier.resolveConfig(
-    path.dirname('src/app.module.ts'),
+    path.dirname(defaultModulePath),
   );
   const config = prettierConfig || {};
   const formatted = await prettier.format(sourceText, {
@@ -209,19 +211,18 @@ export function applyGenerator(
 export interface SchemaOptions {
   name: string;
   path?: string;
+  modulePath?: string;
   flat?: boolean;
 }
 
-export function updateAppModuleForController(options: {
-  name: string;
-  modulePath?: string;
-}): Rule {
+export function updateAppModuleForController(options: SchemaOptions): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    const modulePath = options.modulePath || 'src/app.module.ts';
+    const modulePath = options.modulePath || defaultModulePath;
     const controllerClassName = `${strings.classify(options.name)}Controller`;
-    const controllerImportPath = `./${strings.dasherize(options.name)}/${strings.dasherize(
-      options.name,
-    )}.controller`;
+    const name = `${strings.dasherize(options.name)}`;
+    const controllerImportPath = options.flat
+      ? `./${name}.controller`
+      : `./${name}/${name}.controller`;
     const importStatement = `import { ${controllerClassName} } from '${controllerImportPath}';`;
     return updateModuleEntry(
       tree,
@@ -234,16 +235,14 @@ export function updateAppModuleForController(options: {
   };
 }
 
-export function updateAppModuleForService(options: {
-  name: string;
-  modulePath?: string;
-}): Rule {
+export function updateAppModuleForService(options: SchemaOptions): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    const modulePath = options.modulePath || 'src/app.module.ts';
+    const modulePath = options.modulePath || defaultModulePath;
     const serviceClassName = `${strings.classify(options.name)}Service`;
-    const serviceImportPath = `./${strings.dasherize(options.name)}/${strings.dasherize(
-      options.name,
-    )}.service`;
+    const name = `${strings.dasherize(options.name)}`;
+    const serviceImportPath = options.flat
+      ? `./${name}.service`
+      : `./${name}/${name}.service`;
     const importStatement = `import { ${serviceClassName} } from '${serviceImportPath}';`;
     return updateModuleEntry(
       tree,
@@ -256,16 +255,14 @@ export function updateAppModuleForService(options: {
   };
 }
 
-export function updateAppModuleForModule(options: {
-  name: string;
-  modulePath?: string;
-}): Rule {
+export function updateAppModuleForModule(options: SchemaOptions): Rule {
   return (tree: Tree, context: SchematicContext) => {
-    const modulePath = options.modulePath || 'src/app.module.ts';
+    const modulePath = options.modulePath || defaultModulePath;
     const moduleClassName = `${strings.classify(options.name)}Module`;
-    const moduleImportPath = `./${strings.dasherize(options.name)}/${strings.dasherize(
-      options.name,
-    )}.module`;
+    const name = `${strings.dasherize(options.name)}`;
+    const moduleImportPath = options.flat
+      ? `./${name}.module`
+      : `./${name}/${name}.module`;
     const importStatement = `import { ${moduleClassName} } from '${moduleImportPath}';`;
     return updateModuleEntry(
       tree,
