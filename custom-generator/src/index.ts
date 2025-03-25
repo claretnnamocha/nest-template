@@ -52,13 +52,44 @@ function addImport(
   return sourceText;
 }
 
+function removeImportAndEntry(
+  sourceText: string,
+  className: string,
+  arrayKey: string,
+): string {
+  const lines = sourceText.split('\n');
+  const filteredLines = lines.filter(
+    (line) => !line.includes(`import { ${className} }`),
+  );
+  sourceText = filteredLines.join('\n');
+  const keyIndex = sourceText.indexOf(arrayKey);
+  if (keyIndex !== -1) {
+    const arrayStart = sourceText.indexOf('[', keyIndex);
+    const arrayEnd = sourceText.indexOf(']', arrayStart);
+    if (arrayStart !== -1 && arrayEnd !== -1) {
+      let arrayContent = sourceText.substring(arrayStart + 1, arrayEnd);
+
+      const regex = new RegExp(`,?\\s*${className}\\s*,?`, 'g');
+      arrayContent = arrayContent.replace(regex, '');
+
+      arrayContent = arrayContent.trim().replace(/^,|,$/g, '').trim();
+      sourceText =
+        sourceText.substring(0, arrayStart + 1) +
+        (arrayContent ? ` ${arrayContent} ` : '') +
+        sourceText.substring(arrayEnd);
+    }
+  }
+  return sourceText;
+}
+
 async function updateModuleEntry(
   tree: Tree,
   context: SchematicContext,
   modulePath: string,
   importStatement: string,
-  arrayKey: string, // e.g., "controllers:", "providers:", or "imports:"
+  arrayKey: string,
   entry: string,
+  exemptPath?: string,
 ): Promise<Tree> {
   const fileBuffer = tree.read(modulePath);
   if (!fileBuffer) {
@@ -75,17 +106,14 @@ async function updateModuleEntry(
 
   sourceText = addImport(sourceText, sourceFile, importStatement);
 
-  // Locate the @Module decorator.
   const moduleDecoratorIndex = sourceText.indexOf('@Module(');
   if (moduleDecoratorIndex === -1) {
     context.logger.error(`@Module decorator not found in ${modulePath}`);
     return tree;
   }
 
-  // Update the specified array.
   const keyIndex = sourceText.indexOf(arrayKey, moduleDecoratorIndex);
   if (keyIndex === -1) {
-    // If the array doesn't exist, add a new one before the closing brace.
     const decoratorClose = sourceText.indexOf('}', moduleDecoratorIndex);
     if (decoratorClose === -1) {
       context.logger.error(
@@ -98,7 +126,6 @@ async function updateModuleEntry(
       `\n  ${arrayKey} [${entry}],` +
       sourceText.slice(decoratorClose);
   } else {
-    // If the array exists, update it.
     const arrayStart = sourceText.indexOf('[', keyIndex);
     const arrayEnd = sourceText.indexOf(']', arrayStart);
     if (arrayStart === -1 || arrayEnd === -1) {
@@ -107,7 +134,7 @@ async function updateModuleEntry(
       );
       return tree;
     }
-    // Clean the current content to remove extra commas/spaces.
+
     const currentContent = cleanArrayContent(
       sourceText.substring(arrayStart + 1, arrayEnd),
     );
@@ -117,6 +144,34 @@ async function updateModuleEntry(
         sourceText.substring(0, arrayStart + 1) +
         ` ${newContent} ` +
         sourceText.substring(arrayEnd);
+    }
+  }
+
+  if (exemptPath) {
+    const exemptDir = tree.getDir(normalize(exemptPath)).parent;
+
+    if (exemptDir && exemptDir.subfiles && exemptDir.subfiles.length > 0) {
+      exemptDir.subfiles.forEach((file) => {
+        if (file.endsWith('.service.ts')) {
+          const base = file.replace('.service.ts', '');
+          const className = strings.classify(base) + 'Service';
+
+          sourceText = removeImportAndEntry(
+            sourceText,
+            className,
+            'providers:',
+          );
+        }
+        if (file.endsWith('.controller.ts')) {
+          const base = file.replace('.controller.ts', '');
+          const className = strings.classify(base) + 'Controller';
+          sourceText = removeImportAndEntry(
+            sourceText,
+            className,
+            'controllers:',
+          );
+        }
+      });
     }
   }
 
@@ -146,11 +201,8 @@ export function applyGenerator(
   updateModuleFn: Rule,
 ): Rule {
   return (tree: Tree, _context: SchematicContext) => {
-    // Set default path to 'src' if not provided.
     options.path = options.path || 'src';
 
-    // Compute destination folder: if flat, use options.path directly;
-    // otherwise, create a subfolder named after the dasherized name.
     const destination = options.flat
       ? normalize(options.path)
       : normalize(`${options.path}/${strings.dasherize(options.name)}`);
@@ -163,20 +215,17 @@ export function applyGenerator(
       services = dir.subfiles
         .filter((file) => file.endsWith('.service.ts'))
         .map((file) => {
-          // Remove the extension and form the service class name.
           const base = file.replace('.service.ts', '');
           return strings.classify(base) + 'Service';
         });
       controllers = dir.subfiles
         .filter((file) => file.endsWith('.controller.ts'))
         .map((file) => {
-          // Remove the extension and form the controller class name.
           const base = file.replace('.controller.ts', '');
           return strings.classify(base) + 'Controller';
         });
     }
 
-    // Prepare the template source from the specified folder.
     const templateSource = apply(url(`../templates/${templateFolder}`), [
       template({
         ...options,
@@ -189,7 +238,6 @@ export function applyGenerator(
       move(destination),
     ]);
 
-    // Compute the generated file path.
     const generatedFilePath = path.join(
       destination,
       `${strings.dasherize(options.name)}${fileSuffix}`,
@@ -198,7 +246,7 @@ export function applyGenerator(
     return chain([
       mergeWith(templateSource),
       updateModuleFn,
-      // Format the generated file.
+
       async (tree: Tree, context: SchematicContext) => {
         const fileBuffer = tree.read(generatedFilePath);
         if (fileBuffer) {
@@ -221,6 +269,7 @@ export interface SchemaOptions {
   path?: string;
   modulePath?: string;
   flat?: boolean;
+  exemptPath?: string;
 }
 
 export function updateAppModuleForController(options: SchemaOptions): Rule {
@@ -279,6 +328,7 @@ export function updateAppModuleForModule(options: SchemaOptions): Rule {
       importStatement,
       'imports:',
       moduleClassName,
+      moduleImportPath,
     );
   };
 }
