@@ -125,7 +125,7 @@ async function updateModuleEntry(
   return tree;
 }
 
-const defaultModulePath = "'src/app.module.ts'";
+const defaultModulePath = 'src/app.module.ts';
 
 export async function formatFileContent(sourceText: string): Promise<string> {
   const prettierConfig = await prettier.resolveConfig(
