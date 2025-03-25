@@ -1,0 +1,21 @@
+{
+  "SAMPLE_GREETING": "你好",
+  "HTTP_RESPONSE": {
+    "HEALTH": "健康正常！"
+  },
+  "VALIDATION": {
+    "WEAK_PASSWORD": "'{property}'不是一个强密码",
+    "NOT_EMPTY": "'{property}'不能为空",
+    "NOT_STRING": "'{property}' 必须是字符串",
+    "INVALID_EMAIL": "'{property}'必须是一个电子邮件地址",
+    "INVALID_IP_ADDRESS": "'{property}'必须是一个IP地址",
+    "INVALID_PARAMETERS": "输入参数无效"
+  },
+  "MESSAGES": {
+    "USER_ALREADY_EXISTS": "用户已存在",
+    "REGISTRATION_SUCCESSFUL": "注册成功",
+    "LOGIN_FAILED": "登录失败",
+    "LOGIN_SUCCESSFUL": "登录成功",
+    "PROFILE_NOT_ACTIVATED": "个人资料未激活"
+  }
+}

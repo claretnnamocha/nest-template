@@ -1,0 +1,21 @@
+{
+  "SAMPLE_GREETING": "Ndewo",
+  "HTTP_RESPONSE": {
+    "HEALTH": "Ahụike dị mma!"
+  },
+  "VALIDATION": {
+    "WEAK_PASSWORD": "'{property}' abụghị okwuntughe siri ike",
+    "NOT_EMPTY": "'{property}' ekwesịghị ịnọ n'efu",
+    "NOT_STRING": "'{property}' ga-abụ eriri",
+    "INVALID_EMAIL": "'{property}' ga-abụ email",
+    "INVALID_IP_ADDRESS": "'{property}' ga-abụ adreesị IP",
+    "INVALID_PARAMETERS": "Paramita ntinye ezighi ezi"
+  },
+  "MESSAGES": {
+    "USER_ALREADY_EXISTS": "Onye ọrụ ahụ adịlarịrị",
+    "REGISTRATION_SUCCESSFUL": "Ndebanye aha gara nke ọma",
+    "LOGIN_FAILED": "Nbanye dara ada",
+    "LOGIN_SUCCESSFUL": "Nbanye gara nke ọma",
+    "PROFILE_NOT_ACTIVATED": "Profaili ahụ adịghị arụ ọrụ"
+  }
+}

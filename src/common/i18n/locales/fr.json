@@ -1,0 +1,21 @@
+{
+  "SAMPLE_GREETING": "Bonjour",
+  "HTTP_RESPONSE": {
+    "HEALTH": "La santé va bien !"
+  },
+  "VALIDATION": {
+    "WEAK_PASSWORD": "'{property}' n'est pas un mot de passe fort",
+    "NOT_EMPTY": "'{property}' ne doit pas être vide",
+    "NOT_STRING": "'{property}' doit être une chaîne de caractères",
+    "INVALID_EMAIL": "'{property}' doit être un e-mail",
+    "INVALID_IP_ADDRESS": "'{property}' doit être une adresse IP",
+    "INVALID_PARAMETERS": "Paramètres d'entrée invalides"
+  },
+  "MESSAGES": {
+    "USER_ALREADY_EXISTS": "L'utilisateur existe déjà",
+    "REGISTRATION_SUCCESSFUL": "Inscription réussie",
+    "LOGIN_FAILED": "Échec de la connexion",
+    "LOGIN_SUCCESSFUL": "Connexion réussie",
+    "PROFILE_NOT_ACTIVATED": "Le profil n'est pas activé"
+  }
+}

@@ -1,28 +1,66 @@
-import { NestFactory } from '@nestjs/core';
-import rateLimit from 'express-rate-limit';
+import { ValidationPipe } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
+import { displayName, version } from '../package.json';
 import { AppModule } from './app.module';
-import { logger } from './common';
-import { ErrorFilter } from './common/exception-filters';
-import { ResponseInterceptor } from './common/response-interceptors';
+import { config, logger, setupConfig } from './common';
+import { GeneralExceptionFilter } from './common/filters';
+import { EncryptionGuard, LogGuard } from './common/guards';
+import { LocaleMiddleware } from './common/middlewares';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
-  const port = 8080;
+  const error = await setupConfig();
+  if (error) return logger.log(error);
 
-  app.useGlobalInterceptors(new ResponseInterceptor());
-  app.useGlobalFilters(new ErrorFilter());
+  const documentationRoute = '/documentation';
+  const baseUrl = `http://localhost:${config.PORT}`;
 
-  app.use(helmet());
-  app.use(
-    rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 100,
-    }),
+  const app = await NestFactory.create(AppModule, { logger });
+
+  app.useGlobalPipes(
+    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
 
-  await app.listen(port);
+  const reflector = app.get(Reflector);
+  app.useGlobalFilters(new GeneralExceptionFilter());
+  app.useGlobalGuards(new EncryptionGuard(reflector), new LogGuard());
 
-  logger.log(`Running on http://localhost:${port}`);
+  const localeMiddleware = new LocaleMiddleware();
+  app.use((req: Request, res: Response, next: NextFunction) =>
+    localeMiddleware.use(req, res, next),
+  );
+
+  if (config.ENABLE_DOCUMENTATION) {
+    const documentationTitle = `${displayName} API Reference`;
+
+    const builder = new DocumentBuilder()
+      .addBearerAuth(
+        { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+        'jwt',
+      )
+      .addGlobalParameters({ name: 'locale', in: 'header' })
+      .setTitle(documentationTitle)
+      .setVersion(version)
+      .build();
+
+    SwaggerModule.setup(
+      documentationRoute,
+      app,
+      SwaggerModule.createDocument(app, builder),
+      { customSiteTitle: documentationTitle },
+    );
+  }
+
+  app.enableCors({ credentials: true, origin: config.ACCEPTED_ORIGINS });
+  app.use(helmet());
+
+  await app.listen(config.PORT);
+
+  logger.log(`${displayName} is running on ${baseUrl}`);
+  if (config.ENABLE_DOCUMENTATION) {
+    logger.log(`Documentation on ${baseUrl}${documentationRoute}`);
+  }
 }
 bootstrap();
