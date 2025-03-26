@@ -1,6 +1,10 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import {
+  DocumentBuilder,
+  SwaggerCustomOptions,
+  SwaggerModule,
+} from '@nestjs/swagger';
 import { NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
 import { displayName, version } from '../package.json';
@@ -45,11 +49,18 @@ async function bootstrap() {
       .setVersion(version)
       .build();
 
+    const options: SwaggerCustomOptions = {
+      customSiteTitle: documentationTitle,
+      swaggerOptions: {
+        persistAuthorization: true,
+      },
+    };
+
     SwaggerModule.setup(
       documentationRoute,
       app,
       SwaggerModule.createDocument(app, builder),
-      { customSiteTitle: documentationTitle },
+      options,
     );
   }
 
