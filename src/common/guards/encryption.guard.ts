@@ -11,6 +11,7 @@ import { isInstance } from 'class-validator';
 import { Request } from 'express';
 import { config, decrypt } from '..';
 import { MetadataKeys } from './types';
+import { UnAuthorizedMessage } from '.';
 
 export class BadRequestEncryptionException extends HttpException {
   constructor() {
@@ -81,7 +82,7 @@ export class EncryptionGuard implements CanActivate {
       if (isInstance(error, BadRequestEncryptionException)) {
         throw error;
       }
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(UnAuthorizedMessage());
     }
   }
 }

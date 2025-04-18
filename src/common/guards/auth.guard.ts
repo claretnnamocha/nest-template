@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
+import { UnAuthorizedMessage } from '.';
 import { JwtService } from '../../jwt/jwt.service';
 import { UserRoles } from '../database/models/types';
 import { MetadataKeys } from './types';
@@ -47,18 +48,19 @@ export class AuthGuard implements CanActivate {
           : ''
         : '';
 
-      if (!jwt && requireJWT) throw new UnauthorizedException();
+      if (!jwt && requireJWT)
+        throw new UnauthorizedException(UnAuthorizedMessage());
 
       if (!jwt) throw new UnauthorizedException('JWT token is missing');
       const user = await this.jwtService.verifyJWT(jwt, roles, totp);
 
-      if (!user) throw new UnauthorizedException();
+      if (!user) throw new UnauthorizedException(UnAuthorizedMessage());
 
       req.user = user;
 
       return true;
     } catch (error) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(UnAuthorizedMessage());
     }
   }
 }

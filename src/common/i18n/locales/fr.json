@@ -17,6 +17,7 @@
     "LOGIN_FAILED": "Échec de la connexion",
     "LOGIN_SUCCESSFUL": "Connexion réussie",
     "PROFILE_NOT_ACTIVATED": "Le profil n'est pas activé",
-    "UNKNOWN_ERROR": "Une erreur inconnue s'est produite"
+    "UNKNOWN_ERROR": "Une erreur inconnue s'est produite",
+    "UNAUTHORIZED": "Non autorisé"
   }
 }

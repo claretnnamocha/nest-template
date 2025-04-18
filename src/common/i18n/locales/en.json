@@ -17,6 +17,7 @@
     "LOGIN_FAILED": "Login failed",
     "LOGIN_SUCCESSFUL": "Login successful",
     "PROFILE_NOT_ACTIVATED": "Profile is not activated",
-    "UNKNOWN_ERROR": "An unknown error occurred"
+    "UNKNOWN_ERROR": "An unknown error occurred",
+    "UNAUTHORIZED": "Unauthorized"
   }
 }
