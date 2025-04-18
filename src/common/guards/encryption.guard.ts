@@ -9,14 +9,15 @@ import {
 import { Reflector } from '@nestjs/core';
 import { isInstance } from 'class-validator';
 import { Request } from 'express';
-import { config, decrypt } from '..';
-import { MetadataKeys } from './types';
 import { UnAuthorizedMessage } from '.';
+import { config, decrypt } from '..';
+import { translate } from '../i18n';
+import { MetadataKeys } from './types';
 
 export class BadRequestEncryptionException extends HttpException {
   constructor() {
     const encryptionMessage = config.ENABLE_DEBUG_MODE
-      ? 'Payload(s) not encrypted'
+      ? translate('MESSAGES.UNENCRYPTED')
       : 'ERR 01';
 
     super(

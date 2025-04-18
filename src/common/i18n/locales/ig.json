@@ -18,6 +18,7 @@
     "LOGIN_SUCCESSFUL": "Nbanye gara nke ọma",
     "PROFILE_NOT_ACTIVATED": "Profaili ahụ adịghị arụ ọrụ",
     "UNKNOWN_ERROR": "Ihe njehie amaghị ama mere",
-    "UNAUTHORIZED": "Enweghị ikike"
+    "UNAUTHORIZED": "Enweghị ikike",
+    "UNENCRYPTED": "Ihe ebugo ezoghị ezo"
   }
 }

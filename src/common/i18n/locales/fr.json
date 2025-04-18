@@ -18,6 +18,7 @@
     "LOGIN_SUCCESSFUL": "Connexion réussie",
     "PROFILE_NOT_ACTIVATED": "Le profil n'est pas activé",
     "UNKNOWN_ERROR": "Une erreur inconnue s'est produite",
-    "UNAUTHORIZED": "Non autorisé"
+    "UNAUTHORIZED": "Non autorisé",
+    "UNENCRYPTED": "Charge utile non chiffrée"
   }
 }
