@@ -9,7 +9,12 @@ export class MailgunEmailProvider extends BaseEmailProvider {
   async send(props: SendEmailProps): Promise<ServiceResponse> {
     const { to, subject, html = null, fromEmail = '', fromName = '' } = props;
 
-    const { MAILGUN_API_KEY, MAILGUN_DOMAIN, EMAIL_FROM, EMAIL_NAME } = config;
+    const {
+      MAILGUN_API_KEY = '',
+      MAILGUN_DOMAIN = '',
+      EMAIL_FROM = '',
+      EMAIL_NAME = '',
+    } = config;
 
     const from = `${fromName || EMAIL_NAME} <${fromEmail || EMAIL_FROM}>`;
 

@@ -27,7 +27,7 @@ export class BadRequestEncryptionException extends HttpException {
 
 @Injectable()
 export class EncryptionGuard implements CanActivate {
-  private context: ExecutionContext;
+  private context!: ExecutionContext;
   constructor(private readonly reflector: Reflector) {}
 
   getMetadata<T>(key: string): T {

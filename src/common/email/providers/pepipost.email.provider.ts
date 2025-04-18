@@ -8,11 +8,14 @@ export class PepipostEmailProvider extends BaseEmailProvider {
   async send(props: SendEmailProps): Promise<ServiceResponse> {
     const { to, subject, html = null, fromEmail = '', fromName = '' } = props;
 
-    const { NETCORE_API, EMAIL_FROM, EMAIL_NAME } = config;
+    const { NETCORE_API = '', EMAIL_FROM = '', EMAIL_NAME = '' } = config;
 
     const options = {
       method: 'POST',
-      headers: { api_key: NETCORE_API, 'content-type': 'application/json' },
+      headers: {
+        api_key: NETCORE_API,
+        'content-type': 'application/json',
+      },
       body: JSON.stringify({
         from: {
           email: fromEmail || EMAIL_FROM,

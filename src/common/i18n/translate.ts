@@ -34,7 +34,8 @@ const getNestedValue = (obj: any, key: string) => {
 
 export const translate = (key: string) => {
   const store = asyncLocalStorage.getStore();
-  const locale = store?.locale || 'en';
+  const locale: keyof typeof locales =
+    (store?.locale as keyof typeof locales) || 'en';
 
   const langTranslations = locales[locale] || locales.en;
 

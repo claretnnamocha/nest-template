@@ -5,12 +5,12 @@ import { SigninDTO, SignupDTO } from './dto';
 
 @Controller('auth')
 export class AuthController extends BaseController {
-  @Inject(AuthService) private readonly authService: AuthService;
+  @Inject(AuthService) private readonly authService: AuthService | undefined;
 
   @Post('sign-up')
   async signup(@Body() form: SignupDTO) {
     return this.handleAuthRequest(
-      this.authService.signup.bind(this.authService),
+      this.authService?.signup.bind(this.authService),
       form,
     );
   }
@@ -18,7 +18,7 @@ export class AuthController extends BaseController {
   @Post('sign-in')
   async signin(@Body() form: SigninDTO) {
     return this.handleAuthRequest(
-      this.authService.signin.bind(this.authService),
+      this.authService?.signin.bind(this.authService),
       form,
     );
   }

@@ -12,12 +12,12 @@ export class NodeMailerEmailProvider extends BaseEmailProvider {
 
     const {
       SMTP_HOST,
-      SMTP_PORT,
-      SMTP_USER,
-      SMTP_PASSWORD,
-      ENABLE_SECURE_SMTP,
-      EMAIL_FROM,
-      EMAIL_NAME,
+      SMTP_PORT = '',
+      SMTP_USER = '',
+      SMTP_PASSWORD = '',
+      ENABLE_SECURE_SMTP = false,
+      EMAIL_FROM = '',
+      EMAIL_NAME = '',
     } = config;
 
     const transporter = nodemailer.createTransport({
@@ -28,14 +28,14 @@ export class NodeMailerEmailProvider extends BaseEmailProvider {
         user: SMTP_USER,
         pass: SMTP_PASSWORD,
       },
-    });
+    } as nodemailer.TransportOptions);
     const from = `${fromName || EMAIL_NAME} <${fromEmail || EMAIL_FROM}>`;
 
     const mailOptions: Mail.Options = {
       from,
       to: to.map(({ email }) => email).join(', '),
       subject,
-      html,
+      ...(html ? { html } : {}),
     };
 
     const info = await transporter.sendMail(mailOptions);

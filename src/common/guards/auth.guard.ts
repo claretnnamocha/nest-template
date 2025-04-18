@@ -12,7 +12,7 @@ import { MetadataKeys } from './types';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  private context: ExecutionContext;
+  private context!: ExecutionContext;
 
   constructor(
     private readonly jwtService: JwtService,
@@ -41,10 +41,15 @@ export class AuthGuard implements CanActivate {
       const req: Request = context.switchToHttp().getRequest();
 
       const jwt = req.headers?.authorization?.split(' ')[1];
-      const totp = requireTOTP ? req.headers?.totp : undefined;
+      const totp = requireTOTP
+        ? typeof req.headers?.totp === 'string'
+          ? req.headers.totp
+          : ''
+        : '';
 
       if (!jwt && requireJWT) throw new UnauthorizedException();
 
+      if (!jwt) throw new UnauthorizedException('JWT token is missing');
       const user = await this.jwtService.verifyJWT(jwt, roles, totp);
 
       if (!user) throw new UnauthorizedException();

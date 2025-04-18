@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService as NestJwtService } from '@nestjs/jwt';
 import { Op } from 'sequelize';
+import { translate } from 'src/common/i18n';
 import { config, decrypt, encrypt } from '../common';
 import { User } from '../common/database/models';
 import { UserRoles, UserStatuses } from '../common/database/models/types';
@@ -8,7 +9,8 @@ import { ServiceResponse } from '../common/interfaces';
 
 @Injectable()
 export class JwtService {
-  @Inject(NestJwtService) private readonly nestJwtService: NestJwtService;
+  @Inject(NestJwtService)
+  private readonly nestJwtService!: NestJwtService;
 
   async signJWT(payload: any): Promise<ServiceResponse> {
     try {
@@ -25,16 +27,15 @@ export class JwtService {
     } catch (error) {
       return {
         success: false,
-        message: error.message,
+        message:
+          error instanceof Error
+            ? error.message
+            : translate('MESSAGES.UNKNOWN_ERROR'),
       };
     }
   }
 
-  async verifyJWT(
-    jwt: string,
-    roles = Object.values(UserRoles),
-    totp = undefined,
-  ) {
+  async verifyJWT(jwt: string, roles = Object.values(UserRoles), totp = '') {
     try {
       if (config.ENABLE_ENCRYPTED_REQUESTS) {
         jwt = await decrypt(jwt);

@@ -16,7 +16,10 @@ export class DatabaseProvider {
   };
 
   public static db = async () => {
-    const dialectModule = this.dialectModules[config.DATABASE_DIALECT];
+    const dialectModule =
+      this.dialectModules[
+        config.DATABASE_DIALECT as keyof typeof this.dialectModules
+      ];
 
     const sequelizeOptions: SequelizeOptions = {
       dialect: config.DATABASE_DIALECT,
@@ -30,10 +33,13 @@ export class DatabaseProvider {
       dialectModule,
     };
 
+    if (!config.DATABASE_URL) {
+      throw new Error('DATABASE_URL is not defined in the configuration.');
+    }
     return new Sequelize(config.DATABASE_URL, sequelizeOptions);
   };
 
-  public static async useFactory(): Promise<Sequelize> {
+  public static async useFactory(): Promise<Sequelize | null> {
     if (!config.ENABLE_DATABASE) {
       return null;
     }
@@ -46,7 +52,12 @@ export class DatabaseProvider {
 
       return db;
     } catch (error) {
-      logger.error('DB Error:', error.message);
+      if (error instanceof Error) {
+        logger.error('DB Error:', error.message);
+      } else {
+        logger.error('DB Error:', error);
+      }
+      return null;
     } finally {
       await DataBaseSeeder.seed();
     }

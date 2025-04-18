@@ -21,7 +21,10 @@ export function CatchServiceErrors(): ClassDecorator {
           }
           return result;
         } catch (error) {
-          return BaseService.handleError(error);
+          if (error instanceof Error) {
+            return BaseService.handleError(error);
+          }
+          return BaseService.handleError(new Error('Unknown error occurred'));
         }
       };
     }

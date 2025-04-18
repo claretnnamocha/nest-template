@@ -40,7 +40,7 @@ export class EmailService extends BaseService {
   }: {
     to: { email: string }[];
     subject: string;
-    html?: string;
+    html?: string | null;
     fromEmail?: string;
     fromName?: string;
     template?: EmailTemplates;
@@ -63,7 +63,7 @@ export class EmailService extends BaseService {
     return provider.send({
       to,
       subject,
-      html,
+      html: html || undefined,
       fromEmail,
       fromName,
     });

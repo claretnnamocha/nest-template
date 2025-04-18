@@ -16,6 +16,7 @@
     "REGISTRATION_SUCCESSFUL": "Ndebanye aha gara nke ọma",
     "LOGIN_FAILED": "Nbanye dara ada",
     "LOGIN_SUCCESSFUL": "Nbanye gara nke ọma",
-    "PROFILE_NOT_ACTIVATED": "Profaili ahụ adịghị arụ ọrụ"
+    "PROFILE_NOT_ACTIVATED": "Profaili ahụ adịghị arụ ọrụ",
+    "UNKNOWN_ERROR": "Ihe njehie amaghị ama mere"
   }
 }

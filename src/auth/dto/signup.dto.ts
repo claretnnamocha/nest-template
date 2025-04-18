@@ -16,7 +16,7 @@ export class SignupDTO {
     {},
     { message: translateValidationMessage('VALIDATION.INVALID_EMAIL') },
   )
-  email: string;
+  email!: string;
 
   @ApiProperty({ required: true })
   @IsNotEmpty({ message: translateValidationMessage('VALIDATION.NOT_EMPTY') })
@@ -27,5 +27,5 @@ export class SignupDTO {
     },
   )
   @IsString({ message: translateValidationMessage('VALIDATION.NOT_STRING') })
-  password: string;
+  password!: string;
 }

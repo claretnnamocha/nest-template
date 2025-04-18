@@ -17,12 +17,12 @@ export class SigninDTO {
     {},
     { message: translateValidationMessage('VALIDATION.INVALID_EMAIL') },
   )
-  email: string;
+  email!: string;
 
   @ApiProperty({ required: true })
   @IsNotEmpty()
   @IsString({ message: translateValidationMessage('VALIDATION.NOT_STRING') })
-  password: string;
+  password!: string;
 
   @ApiProperty({ required: false })
   @IsOptional()

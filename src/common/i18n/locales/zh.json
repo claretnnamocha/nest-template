@@ -16,6 +16,7 @@
     "REGISTRATION_SUCCESSFUL": "注册成功",
     "LOGIN_FAILED": "登录失败",
     "LOGIN_SUCCESSFUL": "登录成功",
-    "PROFILE_NOT_ACTIVATED": "个人资料未激活"
+    "PROFILE_NOT_ACTIVATED": "个人资料未激活",
+    "UNKNOWN_ERROR": "发生了一个未知错误"
   }
 }

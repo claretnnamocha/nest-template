@@ -33,29 +33,29 @@ export class User extends Model {
     defaultValue: UUIDV4,
     type: DataTypes.STRING,
   })
-  public id: string;
+  public id!: string;
 
   @Column({ type: DataTypes.STRING, allowNull: false })
-  public email: string;
+  public email!: string;
 
   @Column({ type: DataTypes.STRING })
-  public firstName: string;
+  public firstName!: string;
 
   @Column({ type: DataTypes.STRING })
-  public lastName: string;
+  public lastName!: string;
 
   @Column({ type: DataTypes.STRING })
-  public otherNames: string;
+  public otherNames!: string;
 
   @Column({ type: DataTypes.STRING })
-  public avatar: string;
+  public avatar!: string;
 
   @Column({
     type: DataTypes.STRING,
     values: Object.values(UserRoles),
     defaultValue: UserRoles.user,
   })
-  public role: UserRoles;
+  public role!: UserRoles;
 
   @Column({
     type: DataTypes.STRING,
@@ -63,10 +63,10 @@ export class User extends Model {
     defaultValue: UserStatuses.active,
     values: Object.values(UserStatuses),
   })
-  public status: UserStatuses;
+  public status!: UserStatuses;
 
   @Column({ type: DataTypes.STRING })
-  public phone: string;
+  public phone!: string;
 
   @Column({
     type: DataTypes.STRING,
@@ -75,36 +75,36 @@ export class User extends Model {
       this.setDataValue('password', bcrypt.hashSync(value, salt));
     },
   })
-  public password: string;
+  public password!: string;
 
   @Column({
     type: DataTypes.BOOLEAN,
     defaultValue: false,
     allowNull: false,
   })
-  public verifiedEmail: boolean;
+  public verifiedEmail!: boolean;
 
   @Column({
     type: DataTypes.BOOLEAN,
     defaultValue: false,
     allowNull: false,
   })
-  public enable2FA: boolean;
+  public enable2FA!: boolean;
 
   @Column({
     type: DataTypes.BOOLEAN,
     defaultValue: false,
     allowNull: false,
   })
-  public verifiedPhone: boolean;
+  public verifiedPhone!: boolean;
 
   @Column({ type: DataTypes.TEXT })
-  public totp: string;
+  public totp!: string;
 
   @Column({
     type: DataTypes.STRING,
   })
-  public lastLoggedInAt: string;
+  public lastLoggedInAt!: string;
 
   toJSON() {
     const data = { ...this.dataValues };
@@ -132,6 +132,8 @@ export class User extends Model {
 
   async regenerateOtpSecret() {
     const user = await User.findByPk(this.id);
-    user.update({ totp: authenticator.generateSecret() });
+    if (user) {
+      user.update({ totp: authenticator.generateSecret() });
+    }
   }
 }

@@ -4,7 +4,7 @@ import { timestamp } from '.';
 
 export class FileLogger extends ConsoleLogger {
   constructor(context?: string, options?: ConsoleLoggerOptions) {
-    super(context, options);
+    super(context ?? 'DefaultContext', options ?? {});
     FileLogger.clearLogs();
   }
 

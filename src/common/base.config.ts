@@ -3,6 +3,7 @@ import {
   IsArray,
   IsBoolean,
   IsEmail,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -52,9 +53,9 @@ export class BaseEnvConfig {
   ACCEPTED_ORIGINS?: string[];
 
   @TransformToInt
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
-  PORT: number;
+  PORT: number = 8590;
 
   // DB Config
   @TransformToLowerCase

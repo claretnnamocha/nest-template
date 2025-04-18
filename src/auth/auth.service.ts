@@ -11,8 +11,8 @@ import { SigninDTO, SignupDTO } from './dto';
 @CatchServiceErrors()
 @Injectable()
 export class AuthService extends BaseService {
-  @Inject(JwtService) private readonly jwtService: JwtService;
-  @Inject(EmailService) private readonly emailService: EmailService;
+  @Inject(JwtService) private readonly jwtService: JwtService | undefined;
+  @Inject(EmailService) private readonly emailService: EmailService | undefined;
 
   async signup(payload: SignupDTO): Promise<ServiceResponse> {
     const { email } = payload;
@@ -26,7 +26,7 @@ export class AuthService extends BaseService {
 
     await User.create({ ...payload });
 
-    this.emailService.sendEmail({
+    this.emailService?.sendEmail({
       to: [{ email }],
       subject: EmailSubjects.welcome,
       template: EmailTemplates.welcome,
@@ -56,6 +56,9 @@ export class AuthService extends BaseService {
     }
 
     const lastLoggedInAt = Date.now();
+    if (!this.jwtService) {
+      throw new Error('JwtService is not available');
+    }
     const { data: accessToken } = await this.jwtService.signJWT({
       email,
       lastLoggedInAt,

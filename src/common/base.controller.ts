@@ -6,7 +6,7 @@ import { ServiceResponse } from './interfaces';
 
 @Controller({ scope: Scope.REQUEST })
 export class BaseController {
-  @Inject(REQUEST) private readonly request: Request;
+  @Inject(REQUEST) private readonly request: Request | undefined;
 
   async response(data: ServiceResponse) {
     let statusCode: number;
@@ -20,7 +20,9 @@ export class BaseController {
 
     data.timestamp = timestamp();
 
-    this.request.res.status(statusCode);
+    if (this.request?.res) {
+      this.request.res.status(statusCode);
+    }
     return data;
   }
 
@@ -31,7 +33,7 @@ export class BaseController {
       | (() => Promise<ServiceResponse>),
     dto?: T,
   ) {
-    const data = await serviceMethod(dto);
+    const data = await serviceMethod(dto as T);
     return this.response(data);
   }
 }

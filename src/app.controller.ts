@@ -7,7 +7,8 @@ import { DecryptDTO, EncryptDTO } from './dto';
 @UnEncrypted()
 @Controller()
 export class AppController extends BaseController {
-  @Inject(AppService) private readonly appService: AppService;
+  @Inject(AppService)
+  private readonly appService!: AppService;
 
   @Get('health')
   health() {

@@ -12,5 +12,5 @@ export class DecryptDTO {
   @ApiProperty({ required: true })
   @IsNotEmpty({ message: translateValidationMessage('VALIDATION.NOT_EMPTY') })
   @IsString({ message: translateValidationMessage('VALIDATION.NOT_STRING') })
-  data: string;
+  data!: string;
 }

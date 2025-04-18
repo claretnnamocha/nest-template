@@ -10,13 +10,14 @@ import { ProfileService } from './profile.service';
 @UseGuards(AuthGuard)
 @Controller('profile')
 export class ProfileController extends BaseController {
-  @Inject(ProfileService) private readonly profileService: ProfileService;
+  @Inject(ProfileService)
+  private readonly profileService!: ProfileService;
 
   @Get('')
   async profile(@Req() request: Request) {
     return this.handleAuthRequest(
       this.profileService.getProfile.bind(this.profileService),
-      request.user.email,
+      request.user?.email || '',
     );
   }
 }
