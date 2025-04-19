@@ -23,7 +23,7 @@ export class SignupDTO {
   @IsStrongPassword(
     {},
     {
-      message: translateValidationMessage('VALIDATION.WEAK_PASSWORD '),
+      message: translateValidationMessage('VALIDATION.WEAK_PASSWORD'),
     },
   )
   @IsString({ message: translateValidationMessage('VALIDATION.NOT_STRING') })
