@@ -5,8 +5,10 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { STATUS_CODES } from 'http';
 import { config, timestamp } from '..';
 import { translate } from '../i18n';
+import { translateDynamicMessage } from '../i18n/translate';
 import { ServiceResponse } from '../interfaces';
 
 @Catch()
@@ -26,7 +28,7 @@ export class GeneralExceptionFilter implements ExceptionFilter {
     const handlers: { [key: number]: () => void } = {
       [HttpStatus.BAD_REQUEST]: () => {
         if (
-          errorResponse.error === 'Bad Request' &&
+          errorResponse.error === STATUS_CODES[HttpStatus.BAD_REQUEST] &&
           Array.isArray(errorResponse.message)
         ) {
           statusCode = HttpStatus.UNPROCESSABLE_ENTITY;
@@ -44,8 +46,11 @@ export class GeneralExceptionFilter implements ExceptionFilter {
       },
       [HttpStatus.NOT_FOUND]: () => {
         responseBody.message = config.ENABLE_DEBUG_MODE
-          ? `Cannot ${request.method} ${request.path}`
-          : 'Not Found';
+          ? translateDynamicMessage('DYNAMIC.NOT_FOUND', {
+              method: request.method,
+              path: request.path,
+            })
+          : translate('MESSAGES.NOT_FOUND');
       },
     };
 

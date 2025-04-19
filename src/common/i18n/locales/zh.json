@@ -19,6 +19,11 @@
     "PROFILE_NOT_ACTIVATED": "个人资料未激活",
     "UNKNOWN_ERROR": "发生了一个未知错误",
     "UNAUTHORIZED": "未经授权",
-    "UNENCRYPTED": "负载未加密"
+    "UNENCRYPTED": "负载未加密",
+    "INTERNAL_SERVER_ERROR": "服务器发生意外错误，请稍后再试",
+    "NOT_FOUND": "未找到"
+  },
+  "DYNAMIC": {
+    "NOT_FOUND": "无法'{method}''{path}'"
   }
 }

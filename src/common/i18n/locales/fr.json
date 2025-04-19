@@ -19,6 +19,11 @@
     "PROFILE_NOT_ACTIVATED": "Le profil n'est pas activé",
     "UNKNOWN_ERROR": "Une erreur inconnue s'est produite",
     "UNAUTHORIZED": "Non autorisé",
-    "UNENCRYPTED": "Charge utile non chiffrée"
+    "UNENCRYPTED": "Charge utile non chiffrée",
+    "INTERNAL_SERVER_ERROR": "Une erreur inattendue s'est produite sur le serveur. Veuillez réessayer plus tard",
+    "NOT_FOUND": "Non trouvé"
+  },
+  "DYNAMIC": {
+    "NOT_FOUND": "Impossible de '{method}' '{path}'"
   }
 }

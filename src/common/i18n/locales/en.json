@@ -19,6 +19,11 @@
     "PROFILE_NOT_ACTIVATED": "Profile is not activated",
     "UNKNOWN_ERROR": "An unknown error occurred",
     "UNAUTHORIZED": "Unauthorized",
-    "UNENCRYPTED": "Payload(s) not encrypted"
+    "UNENCRYPTED": "Payload(s) not encrypted",
+    "INTERNAL_SERVER_ERROR": "An unexpected error occurred on the server. Please try again later",
+    "NOT_FOUND": "Not Found"
+  },
+  "DYNAMIC": {
+    "NOT_FOUND": "Cannot '{method}' '{path}'"
   }
 }

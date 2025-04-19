@@ -19,6 +19,11 @@
     "PROFILE_NOT_ACTIVATED": "Profaili ahụ adịghị arụ ọrụ",
     "UNKNOWN_ERROR": "Ihe njehie amaghị ama mere",
     "UNAUTHORIZED": "Enweghị ikike",
-    "UNENCRYPTED": "Ihe ebugo ezoghị ezo"
+    "UNENCRYPTED": "Ihe ebugo ezoghị ezo",
+    "INTERNAL_SERVER_ERROR": "Ihe mberede na-echeghị eche mere na sava. Biko nwaa ọzọ ma emechaa",
+    "NOT_FOUND": "Ahụghị"
+  },
+  "DYNAMIC": {
+    "NOT_FOUND": "Enweghị ike ịme '{method}' na '{path}'"
   }
 }

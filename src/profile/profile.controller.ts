@@ -15,9 +15,10 @@ export class ProfileController extends BaseController {
 
   @Get('')
   async profile(@Req() request: Request) {
+    const email = request.user?.email || '';
     return this.handleAuthRequest(
       this.profileService.getProfile.bind(this.profileService),
-      request.user?.email || '',
+      email,
     );
   }
 }

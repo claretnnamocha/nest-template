@@ -1,3 +1,4 @@
 {
-  "APP_NAME": "Nest Template"
+  "APP_NAME": "Nest Template",
+  "DATABASE_URL_MISSING": "DATABASE_URL is not defined in the env file."
 }

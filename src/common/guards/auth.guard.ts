@@ -51,7 +51,7 @@ export class AuthGuard implements CanActivate {
       if (!jwt && requireJWT)
         throw new UnauthorizedException(UnAuthorizedMessage());
 
-      if (!jwt) throw new UnauthorizedException('JWT token is missing');
+      if (!jwt) throw new UnauthorizedException(UnAuthorizedMessage());
       const user = await this.jwtService.verifyJWT(jwt, roles, totp);
 
       if (!user) throw new UnauthorizedException(UnAuthorizedMessage());

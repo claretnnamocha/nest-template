@@ -52,3 +52,17 @@ export const translateValidationMessage =
     const message: string = translate(key);
     return message.replaceAll('{property}', validationArguments.property);
   };
+
+export const translateDynamicMessage = (
+  key: string,
+  map: { [key: string]: string },
+) => {
+  let message: string = translate(key);
+  for (const mapKey in map) {
+    if (Object.prototype.hasOwnProperty.call(map, mapKey)) {
+      const value = map[mapKey];
+      message = message.replaceAll(`'{${mapKey}}'`, value);
+    }
+  }
+  return message;
+};

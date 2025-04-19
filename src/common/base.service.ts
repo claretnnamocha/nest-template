@@ -1,6 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { config } from '.';
 import { ServiceResponse } from './interfaces';
+import { translate } from './i18n';
 
 export function CatchServiceErrors(): ClassDecorator {
   return (target: any) => {
@@ -24,7 +25,9 @@ export function CatchServiceErrors(): ClassDecorator {
           if (error instanceof Error) {
             return BaseService.handleError(error);
           }
-          return BaseService.handleError(new Error('Unknown error occurred'));
+          return BaseService.handleError(
+            new Error(translate('MESSAGES.UNKNOWN_ERROR')),
+          );
         }
       };
     }
@@ -36,7 +39,7 @@ export class BaseService {
   static async handleError(error: Error): Promise<ServiceResponse> {
     const message = config.ENABLE_DEBUG_MODE
       ? error.message
-      : 'An unexpected error occurred on the server. Please try again later';
+      : translate('MESSAGES.INTERNAL_SERVER_ERROR');
     const errorObj = config.ENABLE_DEBUG_MODE ? error : undefined;
 
     return {

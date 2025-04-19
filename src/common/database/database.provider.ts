@@ -6,6 +6,7 @@ import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import { config, logger } from '..';
 import * as models from './models';
 import { DataBaseSeeder } from './seed-database';
+import { translate } from '../i18n';
 
 export class DatabaseProvider {
   public static readonly provide = 'SEQUELIZE';
@@ -34,7 +35,7 @@ export class DatabaseProvider {
     };
 
     if (!config.DATABASE_URL) {
-      throw new Error('DATABASE_URL is not defined in the configuration.');
+      throw new Error(translate('DATABASE_URL_MISSING'));
     }
     return new Sequelize(config.DATABASE_URL, sequelizeOptions);
   };

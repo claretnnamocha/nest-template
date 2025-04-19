@@ -48,7 +48,7 @@ export class JwtService {
           email: user.email,
           status: UserStatuses.active,
           deletedAt: null,
-          // verifiedEmail: true,
+          verifiedEmail: true,
           role: { [Op.in]: roles },
         },
       });
