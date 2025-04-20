@@ -5,7 +5,7 @@ import { UserRepository } from '../common/database/repositories';
 import { EmailSubjects, EmailTemplates } from '../common/email/email.service';
 import { translate } from '../common/i18n';
 import { ServiceResponse } from '../common/interfaces';
-import { JwtService } from '../jwt/jwt.service';
+import { JwtService } from '../common/jwt/jwt.service';
 import { SigninDTO, SignupDTO } from './dto';
 
 @CatchServiceErrors()

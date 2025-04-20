@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { DecryptDTO, EncryptDTO } from './app.controller';
 import { BaseService, CatchServiceErrors, decrypt, encrypt } from './common';
 import { translate } from './common/i18n';
 import { ServiceResponse } from './common/interfaces';
-import { DecryptDTO, EncryptDTO } from './dto';
 
 @CatchServiceErrors()
 @Injectable()

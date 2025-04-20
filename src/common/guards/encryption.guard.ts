@@ -90,8 +90,6 @@ export class EncryptionGuard implements CanActivate {
       if (isInstance(error, BadRequestEncryptionException)) {
         throw error;
       }
-
-      console.log('ggg', error);
       throw new UnauthorizedException(UnAuthorizedMessage());
     }
   }

@@ -1,8 +1,23 @@
 import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { AppService } from './app.service';
 import { BaseController } from './common';
 import { UnEncrypted } from './common/guards';
-import { DecryptDTO, EncryptDTO } from './dto';
+import { translateValidationMessage } from './common/i18n';
+
+export class EncryptDTO {
+  @ApiProperty({ type: 'object', additionalProperties: false })
+  @IsNotEmpty({ message: translateValidationMessage('VALIDATION.NOT_EMPTY') })
+  data: any;
+}
+
+export class DecryptDTO {
+  @ApiProperty({ required: true })
+  @IsNotEmpty({ message: translateValidationMessage('VALIDATION.NOT_EMPTY') })
+  @IsString({ message: translateValidationMessage('VALIDATION.NOT_STRING') })
+  data!: string;
+}
 
 @UnEncrypted()
 @Controller()

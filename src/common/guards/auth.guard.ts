@@ -7,8 +7,8 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { UnAuthorizedMessage } from '.';
-import { JwtService } from '../../jwt/jwt.service';
 import { UserRoles } from '../database/models/types';
+import { JwtService } from '../jwt/jwt.service';
 import { MetadataKeys } from './types';
 
 @Injectable()
