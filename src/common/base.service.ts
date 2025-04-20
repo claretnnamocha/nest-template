@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { config } from '.';
-import { ServiceResponse } from './interfaces';
 import { translate } from './i18n';
+import { ServiceResponse } from './interfaces';
 
 export function CatchServiceErrors(): ClassDecorator {
   return (target: any) => {

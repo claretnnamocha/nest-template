@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../common/database/repositories';
 import { BaseService, CatchServiceErrors, EmailService } from '../common';
 import { UserStatuses } from '../common/database/models/types';
+import { UserRepository } from '../common/database/repositories';
 import { EmailSubjects, EmailTemplates } from '../common/email/email.service';
 import { translate } from '../common/i18n';
 import { ServiceResponse } from '../common/interfaces';

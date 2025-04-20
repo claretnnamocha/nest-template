@@ -4,9 +4,9 @@ import * as pg from 'pg';
 import { SyncOptions } from 'sequelize';
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import { config, logger } from '..';
+import { translate } from '../i18n';
 import * as models from './models';
 import { DataBaseSeeder } from './seed-database';
-import { translate } from '../i18n';
 
 export class DatabaseProvider {
   public static readonly provide = 'SEQUELIZE';

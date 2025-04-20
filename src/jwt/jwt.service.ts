@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService as NestJwtService } from '@nestjs/jwt';
 import { Op } from 'sequelize';
-import { translate } from 'src/common/i18n';
 import { config, decrypt, encrypt } from '../common';
 import { User } from '../common/database/models';
 import { UserRoles, UserStatuses } from '../common/database/models/types';
+import { translate } from '../common/i18n';
 import { ServiceResponse } from '../common/interfaces';
 
 @Injectable()

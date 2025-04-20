@@ -1,7 +1,7 @@
 import { SetMetadata } from '@nestjs/common';
 import { UserRoles } from '../database/models/types';
-import { MetadataKeys } from './types';
 import { translate } from '../i18n';
+import { MetadataKeys } from './types';
 
 export { AuthGuard } from './auth.guard';
 export { EncryptionGuard } from './encryption.guard';
