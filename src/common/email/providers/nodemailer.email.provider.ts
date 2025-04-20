@@ -1,7 +1,7 @@
 import * as nodemailer from 'nodemailer';
-import { CatchServiceErrors } from '../../../common';
-import { ServiceResponse } from '../../../common/interfaces';
+import { CatchServiceErrors } from '../..';
 import { config } from '../../config';
+import { ServiceResponse } from '../../interfaces';
 import { BaseEmailProvider, SendEmailProps } from './base.email.provider';
 import Mail = require('nodemailer/lib/mailer');
 

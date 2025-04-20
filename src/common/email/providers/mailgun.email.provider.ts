@@ -1,6 +1,6 @@
 import FormData = require('form-data');
-import { CatchServiceErrors } from '../../../common';
-import { ServiceResponse } from '../../../common/interfaces';
+import { CatchServiceErrors } from '../../';
+import { ServiceResponse } from '../..//interfaces';
 import { config } from '../../config';
 import { BaseEmailProvider, SendEmailProps } from './base.email.provider';
 

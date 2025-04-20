@@ -1,4 +1,4 @@
-import { logger } from '../../common';
+import { logger } from '..';
 
 export class DataBaseSeeder {
   public static async seed() {

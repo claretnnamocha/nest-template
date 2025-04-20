@@ -1,6 +1,6 @@
-import { CatchServiceErrors } from '../../../common';
-import { ServiceResponse } from '../../../common/interfaces';
+import { CatchServiceErrors } from '../..';
 import { config } from '../../config';
+import { ServiceResponse } from '../../interfaces';
 import { BaseEmailProvider, SendEmailProps } from './base.email.provider';
 
 @CatchServiceErrors()

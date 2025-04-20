@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-import * as locales from '../../common/i18n/locales';
+import * as locales from '../i18n/locales';
 import { asyncLocalStorage, RequestContext } from '../request.context';
 
 @Injectable()

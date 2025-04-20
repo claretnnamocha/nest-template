@@ -1,5 +1,5 @@
-import { BaseService } from '../../../common/base.service';
-import { ServiceResponse } from '../../../common/interfaces';
+import { BaseService } from '../../base.service';
+import { ServiceResponse } from '../../interfaces';
 
 export type SendEmailProps = {
   to: { email: string }[];
