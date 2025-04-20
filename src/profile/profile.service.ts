@@ -12,7 +12,7 @@ export class ProfileService extends BaseService {
   private readonly userRepository!: UserRepository;
 
   async getProfile(email: string): Promise<ServiceResponse> {
-    const user = await this.userRepository.findAndPaginate({ where: { email } });
+    const user = await this.userRepository.findOne({ where: { email } });
 
     return {
       success: true,
