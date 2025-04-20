@@ -61,7 +61,7 @@ export class FileLogger extends ConsoleLogger {
     logLevel: string,
     message: any,
     context: string = 'Nest',
-    superMethod: Function,
+    superMethod: (...args: any[]) => void,
     ...additionalArgs: any[]
   ): void {
     this.writeLog(logLevel, message, context).catch((err) =>

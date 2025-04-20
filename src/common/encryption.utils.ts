@@ -2,13 +2,13 @@ import { decrypt as decryptFn, encrypt as encryptFn } from 'eccrypto';
 import { config } from '.';
 
 export const encrypt = async (payload: any): Promise<string> => {
-  let str = typeof payload === 'string' ? payload : JSON.stringify(payload);
+  const str = typeof payload === 'string' ? payload : JSON.stringify(payload);
 
-  let encrypted = await encryptFn(
+  const encrypted = await encryptFn(
     Buffer.from(config.ENCRYPTION_PUBLIC_KEY || '', 'hex'),
     Buffer.from(str),
   );
-  let encryptedString: any = JSON.stringify(
+  const encryptedString: any = JSON.stringify(
     Object.fromEntries(
       Object.entries(encrypted).map(([key, value]: [string, Buffer]) => [
         key,

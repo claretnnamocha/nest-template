@@ -59,7 +59,7 @@ export class AuthGuard implements CanActivate {
       req.user = user;
 
       return true;
-    } catch (error) {
+    } catch {
       throw new UnauthorizedException(UnAuthorizedMessage());
     }
   }

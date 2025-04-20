@@ -68,7 +68,7 @@ export class JwtService {
       if (!account) return null;
 
       return user;
-    } catch (error) {
+    } catch {
       return null;
     }
   }
