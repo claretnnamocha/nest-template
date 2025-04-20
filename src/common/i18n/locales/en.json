@@ -21,7 +21,8 @@
     "UNAUTHORIZED": "Unauthorized",
     "UNENCRYPTED": "Payload(s) not encrypted",
     "INTERNAL_SERVER_ERROR": "An unexpected error occurred on the server. Please try again later",
-    "NOT_FOUND": "Not Found"
+    "NOT_FOUND": "Not Found",
+    "PROFILE_DATA_RETRIEVED": "Profile details retrieved"
   },
   "DYNAMIC": {
     "NOT_FOUND": "Cannot '{method}' '{path}'"

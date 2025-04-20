@@ -21,7 +21,8 @@
     "UNAUTHORIZED": "未经授权",
     "UNENCRYPTED": "负载未加密",
     "INTERNAL_SERVER_ERROR": "服务器发生意外错误，请稍后再试",
-    "NOT_FOUND": "未找到"
+    "NOT_FOUND": "未找到",
+    "PROFILE_DATA_RETRIEVED": "个人资料详情已成功检索"
   },
   "DYNAMIC": {
     "NOT_FOUND": "无法'{method}''{path}'"
