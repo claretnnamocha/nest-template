@@ -18,10 +18,8 @@ Handlebars.registerHelper('uuid', function () {
 export enum EmailTemplates {
   welcome = 'welcome',
 }
-type emailSubjects = {
-  [K in keyof typeof EmailTemplates]: string;
-};
-export const EmailSubjects: emailSubjects = {
+
+export const EmailSubjects: { [key in keyof typeof EmailTemplates]: string } = {
   welcome: 'Welcome to our service!',
 };
 

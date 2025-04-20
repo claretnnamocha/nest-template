@@ -57,7 +57,7 @@ export class AuthService extends BaseService {
 
     const lastLoggedInAt = Date.now();
     if (!this.jwtService) {
-      throw new Error('JwtService is not available');
+      throw new Error(translate('MESSAGES.UNAUTHORIZED'));
     }
     const { data: accessToken } = await this.jwtService.signJWT({
       email,
