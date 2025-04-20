@@ -1,15 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CatchServiceErrors } from 'src/common/base.service';
 import { translate } from 'src/common/i18n';
 import { BaseService } from '../common';
-import { User } from '../common/database/models';
 import { ServiceResponse } from '../common/interfaces';
+import { UserRepository } from '../common/database/repositories/user.repository';
 
 @CatchServiceErrors()
 @Injectable()
 export class ProfileService extends BaseService {
+  @Inject(UserRepository)
+  private readonly userRepository!: UserRepository;
+
   async getProfile(email: string): Promise<ServiceResponse> {
-    const user = await User.findOne({ where: { email } });
+    const user = await this.userRepository.findAndPaginate({ where: { email } });
+
     return {
       success: true,
       data: user,

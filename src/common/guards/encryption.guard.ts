@@ -50,16 +50,23 @@ export class EncryptionGuard implements CanActivate {
       const req: Request = context.switchToHttp().getRequest();
 
       if (config.ENABLE_ENCRYPTED_REQUESTS) {
-        const { data } = req.body;
-        const { q } = req.query;
+        let data;
+        let q;
 
-        delete req.body.data;
-        delete req.query.q;
+        if (req?.body?.data) {
+          data = req?.body?.data;
+          delete req?.body?.data;
+        }
+
+        if (req?.query?.q) {
+          q = req?.query?.q;
+          delete req?.query?.q;
+        }
 
         if (
           !(
-            !(!data && Object.keys(req.body).length > 0) &&
-            !(!q && Object.keys(req.query).length > 0)
+            !(!data && Object.keys(req?.body || {}).length > 0) &&
+            !(!q && Object.keys(req?.query || {}).length > 0)
           )
         ) {
           throw new BadRequestEncryptionException();
@@ -83,6 +90,8 @@ export class EncryptionGuard implements CanActivate {
       if (isInstance(error, BadRequestEncryptionException)) {
         throw error;
       }
+
+      console.log('ggg', error);
       throw new UnauthorizedException(UnAuthorizedMessage());
     }
   }

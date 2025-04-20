@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { UserRepository } from 'src/common/database/repositories/user.repository';
 import { BaseService, CatchServiceErrors, EmailService } from '../common';
-import { User } from '../common/database/models';
 import { UserStatuses } from '../common/database/models/types';
 import { EmailSubjects, EmailTemplates } from '../common/email/email.service';
 import { translate } from '../common/i18n';
@@ -13,10 +13,12 @@ import { SigninDTO, SignupDTO } from './dto';
 export class AuthService extends BaseService {
   @Inject(JwtService) private readonly jwtService: JwtService | undefined;
   @Inject(EmailService) private readonly emailService: EmailService | undefined;
+  @Inject(UserRepository)
+  private readonly userRepository!: UserRepository;
 
   async signup(payload: SignupDTO): Promise<ServiceResponse> {
     const { email } = payload;
-    const exists = await User.findOne({ where: { email } });
+    const exists = await this.userRepository.findOne({ where: { email } });
 
     if (exists)
       return {
@@ -24,7 +26,7 @@ export class AuthService extends BaseService {
         message: translate('MESSAGES.USER_ALREADY_EXISTS'),
       };
 
-    await User.create({ ...payload });
+    await this.userRepository.create({ ...payload });
 
     this.emailService?.sendEmail({
       to: [{ email }],
@@ -40,7 +42,7 @@ export class AuthService extends BaseService {
 
   async signin(payload: SigninDTO): Promise<ServiceResponse> {
     const { email, password } = payload;
-    const user = await User.findOne({ where: { email } });
+    const user = await this.userRepository.findOne({ where: { email } });
 
     if (!(user && user.validatePassword(password)))
       return {
