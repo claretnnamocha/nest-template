@@ -1,4 +1,3 @@
-import FormData = require('form-data');
 import { CatchServiceErrors } from '../../';
 import { ServiceResponse } from '../..//interfaces';
 import { config } from '../../config';
@@ -7,7 +6,7 @@ import { BaseEmailProvider, SendEmailProps } from './base.email.provider';
 @CatchServiceErrors()
 export class MailgunEmailProvider extends BaseEmailProvider {
   async send(props: SendEmailProps): Promise<ServiceResponse> {
-    const { to, subject, html = null, fromEmail = '', fromName = '' } = props;
+    const { to, subject, html = '', fromEmail = '', fromName = '' } = props;
 
     const {
       MAILGUN_API_KEY = '',
@@ -40,6 +39,7 @@ export class MailgunEmailProvider extends BaseEmailProvider {
     );
 
     const { id, message } = await response.json();
+    console.log({ d: response.status });
 
     return {
       success: true,
