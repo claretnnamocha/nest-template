@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CatchServiceErrors } from 'src/common/base.service';
 import { translate } from 'src/common/i18n';
 import { BaseService } from '../common';
-import { ServiceResponse } from '../common/interfaces';
 import { UserRepository } from '../common/database/repositories/user.repository';
+import { ServiceResponse } from '../common/interfaces';
 
 @CatchServiceErrors()
 @Injectable()

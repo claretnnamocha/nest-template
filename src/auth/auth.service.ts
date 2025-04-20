@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from 'src/common/database/repositories/user.repository';
+import { UserRepository } from '../common/database/repositories';
 import { BaseService, CatchServiceErrors, EmailService } from '../common';
 import { UserStatuses } from '../common/database/models/types';
 import { EmailSubjects, EmailTemplates } from '../common/email/email.service';
