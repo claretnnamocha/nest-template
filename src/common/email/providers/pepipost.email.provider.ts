@@ -28,11 +28,16 @@ export class PepipostEmailProvider extends BaseEmailProvider {
     };
 
     const response = await fetch(
-      'https://api.pepipost.com/v5.1/mail/send',
+      'https://emailapi.netcorecloud.net/v5/mail/send',
       options,
     );
-    const { data, message, error: [error] = [{}] } = await response.json();
-    const success = !error;
+    const g = await response.json();
+
+    console.log({ g });
+
+    const { data, message, error: [error] = [{}] } = g;
+
+    const success = !Object.keys(error).length;
 
     return {
       success,

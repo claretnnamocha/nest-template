@@ -39,7 +39,6 @@ export class MailgunEmailProvider extends BaseEmailProvider {
     );
 
     const { id, message } = await response.json();
-    console.log({ d: response.status });
 
     return {
       success: true,

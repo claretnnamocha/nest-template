@@ -23,6 +23,8 @@ export const EmailSubjects: { [key in keyof typeof EmailTemplates]: string } = {
   welcome: 'Welcome to our service!',
 };
 
+type EmailProviderClass = new (...args: any[]) => BaseEmailProvider;
+
 @CatchServiceErrors()
 @Injectable()
 export class EmailService extends BaseService {
@@ -34,7 +36,7 @@ export class EmailService extends BaseService {
     fromName = '',
     template,
     template_data = {},
-    provider = new NodeMailerEmailProvider(),
+    ProviderClass = NodeMailerEmailProvider,
   }: {
     to: { email: string }[];
     subject: string;
@@ -43,7 +45,7 @@ export class EmailService extends BaseService {
     fromName?: string;
     template?: EmailTemplates;
     template_data?: any;
-    provider?: BaseEmailProvider;
+    ProviderClass?: EmailProviderClass;
   }): Promise<ServiceResponse> {
     if (!html && template) {
       const file_name = path.resolve(
@@ -57,6 +59,8 @@ export class EmailService extends BaseService {
       const handlebar_template = Handlebars.compile(html_file);
       html = handlebar_template(template_data);
     }
+
+    const provider = new ProviderClass();
 
     return provider.send({
       to,
