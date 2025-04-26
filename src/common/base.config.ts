@@ -58,7 +58,6 @@ export class BaseEnvConfig {
   PORT: number = 8590;
 
   // DB Config
-  @TransformToLowerCase
   @IsOptional()
   @IsString()
   DATABASE_URL?: string;
